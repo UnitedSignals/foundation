@@ -151,7 +151,8 @@
             required = el_patterns[i][2],
             value = el.value,
             is_radio = el.type === "radio",
-            valid_length = (required) ? (el.value.length > 0) : true;
+            valid_length = (required) ? (el.value.length > 0) : true,
+            form = $(el).closest('form');
 
         if (is_radio && required) {
           validations.push(this.valid_radio(el, required));
@@ -160,9 +161,11 @@
             !required && el.value.length < 1) {
             $(el).removeAttr('data-invalid').parent().removeClass('error');
             validations.push(true);
+            form.trigger('valid');
           } else {
             $(el).attr('data-invalid', '').parent().addClass('error');
             validations.push(false);
+            form.trigger('invalid');
           }
         }
       }
